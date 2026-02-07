@@ -1,7 +1,7 @@
 This Finance Tracker is a simple and responsive web application designed to help users record income and expenses and view their net profit through a clear, user-friendly interface. The front end is developed using semantic HTML5, CSS3, and Vanilla JavaScript to demonstrate real-time calculations, dynamic data handling, and basic DOM manipulation. The application focuses on client-side functionality while remaining adaptable for future backend integration to support data persistence and advanced financial features.
 
 Used Technologies:
-Frontend: HTML5, CSS3, Vanilla JavaScript
+Frontend: HTML5, CSS3, Vanilla JavaScript,
 Backend:Node js
 
 
