@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+    
+    <title>Login — Finance Tracker</title>
+    
+    <style>
+        /* --- DARK THEME VARIABLES --- */
+        :root {
+            --bg-body: #0f172a;       /* Slate 900 */
+            --bg-card: rgba(30, 41, 59, 0.7); /* Glass effect */
+            --bg-input: #334155;      /* Slate 700 */
+            --primary: #10b981;       /* Emerald */
+            --primary-glow: rgba(16, 185, 129, 0.4);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-body);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 20%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        /* --- CARD STYLES --- */
+        .page-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .form-box {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        /* --- FORM ELEMENTS --- */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: none; /* Using placeholders with icons for cleaner look */
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px 14px 45px; /* Left padding for icon */
+            background: var(--bg-input);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            background: #1e293b;
+        }
+
+        input::placeholder {
+            color: #64748b;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            background: var(--primary);
+            color: #0f172a; /* Dark text on bright green */
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px var(--primary-glow);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* --- MESSAGES & LINKS --- */
+        #messages {
+            margin-bottom: 20px;
+            min-height: 24px;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--primary);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .toggle-text {
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .toggle-text a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .toggle-text a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Simple Logo for visual balance */
+        .logo {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+    </style>
+  </head>
+  <body>
+
+    <!-- Placeholder for Topbar (Usually hidden on login pages, but kept per request) -->
+    <div id="topbar" style="position: absolute; top: 0; width: 100%; z-index: 10;"></div>
+
+    <main class="page-container">
+      <div class="form-box">
+        <!-- Logged In User Section -->
+        <div id="loggedInSection" style="display: none; margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+          <div class="logo">
+            <i class="ph ph-user-circle"></i>
+          </div>
+          <h2 style="font-size: 1.2rem; margin-bottom: 10px;">Already Logged In</h2>
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 5px;">Current User</p>
+            <p style="color: var(--primary); font-weight: 600; margin-bottom: 8px;" id="currentUserEmail">—</p>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Role: <span id="currentUserRole" style="color: var(--text-main);">—</span></p>
+          </div>
+          <button class="submit-btn" type="button" style="background: #3b82f6; margin-bottom: 10px;" onclick="goToDashboard()">Go to Dashboard</button>
+          <button class="submit-btn" type="button" style="background: #ef4444;" onclick="logoutUser()">Logout</button>
+        </div>
+
+        <!-- Login Form Section -->
+        <div id="loginSection">
+          <div class="logo">
+              <i class="ph ph-currency-circle-dollar"></i>
+          </div>
+          <h1>Welcome Back</h1>
+          <p class="subtitle">Sign in to manage your finances</p>
+          
+          <div id="messages"></div>
+          
+          <form id="loginForm">
+            <div class="form-group">
+              <div class="input-wrapper">
+                  <i class="ph ph-envelope-simple"></i>
+                  <input id="email" name="email" type="email" placeholder="Email address" required autocomplete="email" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <div class="input-wrapper">
+                  <i class="ph ph-lock-key"></i>
+                  <input id="password" name="password" type="password" placeholder="Password" required autocomplete="current-password" />
+              </div>
+            </div>
+            
+            <button class="submit-btn" type="submit">
+              <span id="btn-text">Sign In</span>
+            </button>
+          </form>
+          
+          <p class="toggle-text">
+              Don't have an account? <a href="/src/pages/register.html">Create one</a>
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Note: These scripts are required. If you don't have the backend set up yet, 
+         the script below includes a MOCK function so the UI works for testing. -->
+    <script src="/js/header.js"></script>
+    <script src="/js/auth.js"></script>
+    
+    <script>
+      // --- MOCK FUNCTION (Remove this if you have the real /js/auth.js) ---
+      // This simulates the API so you can test the design immediately.
+      if (typeof login === 'undefined') {
+          window.login = async (email, password) => {
+              return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                      if(email && password.length >= 6) {
+                          resolve({ token: 'mock-token-123', user: { email } });
+                      } else {
+                          reject(new Error('Invalid email or password'));
+                      }
+                  }, 1000);
+              });
+          };
+          window.saveSession = (token, user) => {
+              localStorage.setItem('token', token);
+              localStorage.setItem('user', JSON.stringify(user));
+          };
+      }
+
+      // --- FORM LOGIC ---
+      const form = document.getElementById('loginForm');
+      const messages = document.getElementById('messages');
+      const btnText = document.getElementById('btn-text');
+      const submitBtn = document.querySelector('.submit-btn');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // UI Loading State
+        messages.innerHTML = '';
+        btnText.textContent = 'Authenticating...';
+        submitBtn.style.opacity = '0.7';
+        submitBtn.style.cursor = 'wait';
+
+        const email = form.email.value.trim();
+        const password = form.password.value;
+
+        try {
+          // Call the login function (either from /js/auth.js or the mock above)
+          const res = await login(email, password);
+          saveSession(res.token, res.user);
+          
+          messages.innerHTML = '<div class="success-message"><i class="ph ph-check-circle"></i> Login successful — redirecting...</div>';
+          
+          setTimeout(() => {
+            window.location.href = '/src/pages/dashboard.html?loginSuccess=true';
+          }, 900);
+          
+        } catch (err) {
+          messages.innerHTML = `<div class="error-message"><i class="ph ph-warning-circle"></i> ${err.message || 'Login failed'}</div>`;
+          
+          // Reset Button
+          btnText.textContent = 'Sign In';
+          submitBtn.style.opacity = '1';
+          submitBtn.style.cursor = 'pointer';
+        }
+      });
+
+      // Check if user is already logged in
+      function checkLoggedInUser() {
+        const userStr = localStorage.getItem('user');
+        const user = userStr ? JSON.parse(userStr) : null;
+
+        if (user && user.email) {
+          // User is logged in, show logged-in section
+          document.getElementById('loggedInSection').style.display = 'block';
+          document.getElementById('loginSection').style.display = 'none';
+          document.getElementById('currentUserEmail').textContent = user.email;
+          document.getElementById('currentUserRole').textContent = user.role || 'Student';
+        } else {
+          // User is not logged in, show login form
+          document.getElementById('loggedInSection').style.display = 'none';
+          document.getElementById('loginSection').style.display = 'block';
+        }
+      }
+
+      // Go to dashboard
+      function goToDashboard() {
+        window.location.href = '/src/pages/dashboard.html';
+      }
+
+      // Logout user
+      function logoutUser() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        location.reload();
+      }
+
+      // Initialize on page load
+      window.addEventListener('load', checkLoggedInUser);
+    </script>
+  </body>
+</html>

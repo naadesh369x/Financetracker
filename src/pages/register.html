@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+    
+    <title>Register — Finance Tracker</title>
+    
+    <style>
+        /* --- DARK THEME VARIABLES --- */
+        :root {
+            --bg-body: #0f172a;       /* Slate 900 */
+            --bg-card: rgba(30, 41, 59, 0.7); /* Glass effect */
+            --bg-input: #334155;      /* Slate 700 */
+            --primary: #10b981;       /* Emerald */
+            --primary-glow: rgba(16, 185, 129, 0.4);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-body);
+            background-image: 
+                radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 10% 90%, rgba(16, 185, 129, 0.15) 0%, transparent 20%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        /* --- CARD STYLES --- */
+        .page-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .form-box {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        /* --- FORM ELEMENTS --- */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label { display: none; } /* Using placeholders with icons */
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        /* Style inputs and select similarly */
+        input, select {
+            width: 100%;
+            padding: 14px 16px 14px 45px; /* Left padding for icon */
+            background: var(--bg-input);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+            appearance: none; /* Remove default select arrow */
+            -webkit-appearance: none;
+        }
+
+        /* Custom arrow for select */
+        .select-wrapper::after {
+            content: '\f078'; /* FontAwesome arrow down fallback or use Phosphor */
+            font-family: "Phosphor"; 
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            background: #1e293b;
+        }
+
+        input::placeholder, select:invalid {
+            color: #64748b;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            background: var(--primary);
+            color: #0f172a;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px var(--primary-glow);
+        }
+        
+        .submit-btn:active { transform: translateY(0); }
+
+        /* --- MESSAGES & LINKS --- */
+        #messages {
+            margin-bottom: 20px;
+            min-height: 24px;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .toggle-text {
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .toggle-text a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .toggle-text a:hover { text-decoration: underline; }
+        
+        .logo {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* --- SUCCESS MODAL --- */
+        #successModal {
+            background: rgba(15, 23, 42, 0.8); /* Darker overlay */
+            backdrop-filter: blur(5px);
+        }
+        
+        #successModal .modal-content {
+            background: #1e293b; /* Dark Card */
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        #successModal h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        #successModal p { color: var(--text-muted); }
+        
+        .check-icon {
+            color: var(--primary);
+            font-size: 4rem;
+            margin-bottom: 16px;
+            display: inline-block;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+  </head>
+  <body>
+
+    <!-- Topbar Placeholder -->
+    <div id="topbar" style="position: absolute; top: 0; width: 100%; z-index: 10;"></div>
+
+    <!-- Success Modal -->
+    <div id="successModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; align-items:center; justify-content:center; z-index:9999;">
+      <div class="modal-content" style="padding:40px; border-radius:20px; text-align:center; max-width:400px;">
+        <div class="check-icon">
+            <i class="ph-fill ph-check-circle"></i>
+        </div>
+        <h2 style="margin:0 0 16px;">Registration Successful!</h2>
+        <p style="margin-bottom:24px; font-size:16px;">Your account has been created successfully.</p>
+        <p style="margin:0; font-size:14px;">Redirecting to login in <span id="countdown" style="font-weight:bold; color:var(--primary);">3</span> seconds...</p>
+      </div>
+    </div>
+
+    <main class="page-container">
+      <div class="form-box">
+        <div class="logo">
+            <i class="ph ph-currency-circle-dollar"></i>
+        </div>
+        <h1>Create Account</h1>
+        <p class="subtitle">Join us to start tracking</p>
+        
+        <div id="messages"></div>
+        
+        <form id="registerForm">
+          <div class="form-group">
+            <div class="input-wrapper">
+                <i class="ph ph-user"></i>
+                <input id="name" name="name" type="text" placeholder="Full name" required autocomplete="name" />
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="input-wrapper">
+                <i class="ph ph-envelope-simple"></i>
+                <input id="email" name="email" type="email" placeholder="Email address" required autocomplete="email" />
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="input-wrapper">
+                <i class="ph ph-lock-key"></i>
+                <input id="password" name="password" type="password" placeholder="Password (min 6 chars)" required minlength="6" autocomplete="new-password" />
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="input-wrapper select-wrapper">
+                <i class="ph ph-users"></i>
+                <select id="role" name="role" required>
+                  <option value="" disabled selected>Select Role</option>
+                  <option value="student">Student</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="admin">Admin</option>
+                </select>
+            </div>
+          </div>
+          
+          <button class="submit-btn" type="submit">
+              <span id="btn-text">Create Account</span>
+          </button>
+        </form>
+        
+        <p class="toggle-text">
+            Already have an account? <a href="/src/pages/login.html">Login</a>
+        </p>
+      </div>
+    </main>
+
+    <!-- External Scripts -->
+    <script src="/js/header.js"></script>
+    <script src="/js/auth.js"></script>
+    
+    <!-- Inline Logic & Mocking -->
+    <script>
+      // --- MOCK FUNCTION (Remove if /js/auth.js is present) ---
+      if (typeof register === 'undefined') {
+          window.register = async (name, email, password, role) => {
+              return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                      if(name && email && password && role) {
+                          resolve({ success: true });
+                      } else {
+                          reject(new Error('All fields are required'));
+                      }
+                  }, 1000); // Simulate network delay
+              });
+          };
+      }
+
+      // --- FORM LOGIC ---
+      const form = document.getElementById('registerForm');
+      const messages = document.getElementById('messages');
+      const btnText = document.getElementById('btn-text');
+      const submitBtn = document.querySelector('.submit-btn');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // UI Loading State
+        messages.innerHTML = '';
+        btnText.textContent = 'Creating Account...';
+        submitBtn.style.opacity = '0.7';
+        submitBtn.style.cursor = 'wait';
+
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const password = form.password.value;
+        const role = form.role.value;
+
+        try {
+          await register(name, email, password, role);
+          
+          // Show success modal
+          const modal = document.getElementById('successModal');
+          modal.style.display = 'flex';
+          
+          // Countdown timer
+          let count = 3;
+          const countdownEl = document.getElementById('countdown');
+          
+          const countdown = setInterval(() => {
+            count--;
+            countdownEl.textContent = count;
+            
+            if (count <= 0) {
+              clearInterval(countdown);
+              window.location.href = '/src/pages/login.html';
+            }
+          }, 1000);
+
+        } catch (err) {
+          messages.innerHTML = `<div class="error-message"><i class="ph ph-warning-circle"></i> ${err.message || 'Registration failed'}</div>`;
+          
+          // Reset Button
+          btnText.textContent = 'Create Account';
+          submitBtn.style.opacity = '1';
+          submitBtn.style.cursor = 'pointer';
+        }
+      });
+    </script>
+  </body>
+</html>
