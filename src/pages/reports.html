@@ -3,25 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Google Fonts -->
+  
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
-    <!-- Chart.js Library -->
+   
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Reports — Finance Tracker</title>
     
     <style>
-      /* --- DARK THEME VARIABLES --- */
+    
       :root {
-        --bg-body: #0f172a;       /* Slate 900 */
-        --bg-card: #1e293b;       /* Slate 800 */
-        --bg-input: #334155;      /* Slate 700 */
-        --text-main: #f1f5f9;     /* Slate 100 */
-        --text-muted: #94a3b8;    /* Slate 400 */
-        --primary: #3b82f6;       /* Blue 500 */
-        --success: #10b981;       /* Emerald 500 */
-        --danger: #ef4444;        /* Red 500 */
-        --warning: #f59e0b;       /* Amber 500 */
+        --bg-body: #0f172a;      
+        --bg-card: #1e293b;       
+        --bg-input: #334155;      
+        --text-main: #f1f5f9;     
+        --text-muted: #94a3b8;    
+        --primary: #3b82f6;       
+        --success: #10b981;       
+        --danger: #ef4444;      
+        --warning: #f59e0b;       
         --border: #334155;
         --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
       }
@@ -35,14 +35,14 @@
         min-height: 100vh;
       }
 
-      /* --- LAYOUT --- */
+     
       .page-container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 40px 20px;
       }
 
-      /* --- ALERTS & USER BAR --- */
+     
       .user-bar {
         display: flex;
         justify-content: space-between;
@@ -84,7 +84,7 @@
       }
       .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
 
-      /* --- CARDS --- */
+      
       .card {
         background: var(--bg-card);
         border-radius: 12px;
@@ -105,7 +105,7 @@
       .card-header h2 { font-size: 1.1rem; font-weight: 600; }
       .card-body { padding: 20px; }
 
-      /* --- STATS GRID --- */
+     
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -126,7 +126,7 @@
       .text-green { color: var(--success); }
       .text-red { color: var(--danger); }
 
-      /* --- FILTERS --- */
+    
       .filters {
         display: flex;
         gap: 12px;
@@ -156,7 +156,7 @@
       }
       .btn:hover { background: #2563eb; }
 
-      /* --- TABLE STYLES --- */
+    
       .table-container {
         overflow-x: auto;
       }
@@ -217,7 +217,7 @@
         color: var(--text-muted);
       }
 
-      /* --- SUMMARY SECTION --- */
+     
       .summary-box {
         background: rgba(59, 130, 246, 0.1);
         border: 1px solid var(--primary);
@@ -240,7 +240,7 @@
       .summary-label { color: var(--text-muted); }
       .summary-value { font-weight: 600; }
 
-      /* --- CHARTS SECTION --- */
+    
       .charts-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -306,7 +306,7 @@
       <div id="topbar"></div>
 
       <div class="page-container">
-        <!-- User Information Section -->
+       
         <div class="card">
           <div class="card-body">
             <div class="user-bar">
@@ -330,7 +330,7 @@
           </div>
         </div>
 
-        <!-- Summary Statistics -->
+     
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-label">Total Income</div>
@@ -354,13 +354,13 @@
         <div style="margin-bottom: 40px;">
           <h2 style="margin-bottom: 20px; font-size: 1.3rem;">📊 Financial Analysis</h2>
           <div class="charts-grid">
-            <!-- Pie Chart: Income vs Expense -->
+           
             <div class="chart-container">
               <div class="chart-title">Income vs Expense Distribution</div>
               <canvas id="incomeExpenseChart"></canvas>
             </div>
 
-            <!-- Bar Chart: Income vs Expense Comparison -->
+            <!-- Bar Chart-->
             <div class="chart-container">
               <div class="chart-title">Income & Expense Comparison</div>
               <canvas id="comparisonChart"></canvas>
@@ -368,7 +368,7 @@
           </div>
         </div>
 
-        <!-- Transactions Report -->
+     
         <div class="card">
           <div class="card-header">
             <h2>Transaction History</h2>
@@ -401,7 +401,7 @@
               </table>
             </div>
 
-            <!-- Summary Box -->
+       
             <div class="summary-box">
               <div class="summary-row">
                 <span class="summary-label">Total Income:</span>
@@ -427,11 +427,10 @@
 
     <script src="/js/header.js"></script>
     <script>
-      // State
+     
       let allTransactions = [];
       let filteredTransactions = [];
 
-      // Initialize
       function init() {
         const userStr = localStorage.getItem('user');
         const user = userStr ? JSON.parse(userStr) : null;
@@ -453,11 +452,11 @@
           day: 'numeric'
         });
 
-        // Fetch transactions
+        
         fetchTransactions();
       }
 
-      // Fetch user's transactions
+      // Fetch users transactions
       async function fetchTransactions() {
         try {
           const token = localStorage.getItem('token');
@@ -491,14 +490,14 @@
         renderReport();
       }
 
-      // Render report
+    
       function renderReport() {
         renderTable();
         updateStats();
         updateCharts();
       }
 
-      // Render table
+      
       function renderTable() {
         const tbody = document.getElementById('transactionsTable');
         
@@ -507,7 +506,7 @@
           return;
         }
 
-        // Sort by date (newest first)
+        // Sort by date 
         const sorted = [...filteredTransactions].sort((a, b) => 
           new Date(b.createdAt) - new Date(a.createdAt)
         );

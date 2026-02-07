@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Google Fonts -->
+ 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
     <title>Settings — Finance Tracker</title>
@@ -33,7 +33,7 @@
         min-height: 100vh;
       }
 
-      /* --- LAYOUT --- */
+      
       .page-container {
         max-width: 900px;
         margin: 0 auto;
@@ -81,7 +81,7 @@
         padding: 20px;
       }
 
-      /* --- SETTINGS SECTIONS --- */
+   
       .setting-row {
         display: flex;
         justify-content: space-between;
@@ -111,7 +111,7 @@
         align-items: center;
       }
 
-      /* --- TOGGLES --- */
+     
       .toggle {
         position: relative;
         width: 50px;
@@ -144,7 +144,7 @@
         left: 24px;
       }
 
-      /* --- BUTTONS --- */
+    
       .btn {
         padding: 10px 20px;
         border-radius: 8px;
@@ -184,7 +184,7 @@
         color: var(--primary);
       }
 
-      /* --- FORMS --- */
+     
       .form-group {
         margin-bottom: 16px;
       }
@@ -218,7 +218,7 @@
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
       }
 
-      /* --- STATUS MESSAGES --- */
+      
       .status-message {
         padding: 12px 16px;
         border-radius: 8px;
@@ -254,7 +254,7 @@
         }
       }
 
-      /* --- RESPONSIVE --- */
+      
       @media (max-width: 640px) {
         .setting-row {
           flex-direction: column;
@@ -278,13 +278,13 @@
       <div id="topbar"></div>
 
       <div class="page-container">
-        <!-- Page Header -->
+        
         <div class="page-header">
           <h1>⚙️ Settings</h1>
           <p>Manage your account preferences and application settings</p>
         </div>
 
-        <!-- Account Settings -->
+       
         <div class="card">
           <div class="card-header">
             <h2>👤 Account Information</h2>
@@ -315,7 +315,7 @@
           </div>
         </div>
 
-        <!-- Privacy Settings -->
+      
         <div class="card">
           <div class="card-header">
             <h2>🔒 Privacy & Security</h2>
@@ -346,7 +346,7 @@
           </div>
         </div>
 
-        <!-- Display Preferences -->
+        
         <div class="card">
           <div class="card-header">
             <h2>🎨 Display Preferences</h2>
@@ -384,7 +384,7 @@
           </div>
         </div>
 
-        <!-- Change Password -->
+        
         <div class="card">
           <div class="card-header">
             <h2>🔑 Change Password</h2>
@@ -413,7 +413,7 @@
           </div>
         </div>
 
-        <!-- Danger Zone -->
+       
         <div class="card" style="border-color: var(--danger);">
           <div class="card-header" style="border-bottom-color: var(--danger);">
             <h2 style="color: var(--danger);">⚠️ Danger Zone</h2>
@@ -435,7 +435,7 @@
 
     <script src="/js/header.js"></script>
     <script>
-      // Initialize settings on page load
+      
       function initSettings() {
         const userStr = localStorage.getItem('user');
         const user = userStr ? JSON.parse(userStr) : null;
@@ -445,11 +445,11 @@
           return;
         }
 
-        // Display user info
+      
         document.getElementById('displayEmail').textContent = user.email;
         document.getElementById('displayRole').textContent = user.role || 'Student';
 
-        // Load saved preferences
+        
         const preferences = JSON.parse(localStorage.getItem('preferences') || '{}');
         document.getElementById('currency').value = preferences.currency || 'USD';
         document.getElementById('dateFormat').value = preferences.dateFormat || 'MM/DD/YYYY';
@@ -468,7 +468,7 @@
         }
       }
 
-      // Toggle settings
+     
       function toggleSetting(id) {
         const element = document.getElementById(id);
         element.classList.toggle('active');
@@ -479,7 +479,7 @@
         localStorage.setItem('toggleSettings', JSON.stringify(settings));
       }
 
-      // Save select settings
+      
       function saveSetting(id) {
         const value = document.getElementById(id).value;
         const preferences = JSON.parse(localStorage.getItem('preferences') || '{}');
@@ -533,7 +533,7 @@
           );
 
           if (reconfirmed) {
-            // Simulate deletion
+            
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('preferences');
@@ -543,7 +543,7 @@
         }
       }
 
-      // Show message
+     
       function showMessage(elementId, type, message) {
         const el = document.getElementById(elementId);
         el.textContent = message;
@@ -556,7 +556,7 @@
         }
       }
 
-      // Initialize on page load
+      
       window.addEventListener('load', initSettings);
     </script>
   </body>

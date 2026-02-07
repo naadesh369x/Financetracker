@@ -3,21 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Icons -->
+   
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- Fonts -->
+   
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
     
     <title>Register — Finance Tracker</title>
     
     <style>
-        /* --- DARK THEME VARIABLES --- */
+      
         :root {
-            --bg-body: #0f172a;       /* Slate 900 */
-            --bg-card: rgba(30, 41, 59, 0.7); /* Glass effect */
-            --bg-input: #334155;      /* Slate 700 */
-            --primary: #10b981;       /* Emerald */
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --bg-input: #334155;     
+            --primary: #10b981;       
             --primary-glow: rgba(16, 185, 129, 0.4);
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
@@ -78,13 +77,13 @@
             margin-bottom: 30px;
         }
 
-        /* --- FORM ELEMENTS --- */
+       
         .form-group {
             margin-bottom: 20px;
             text-align: left;
         }
 
-        label { display: none; } /* Using placeholders with icons */
+        label { display: none; } 
 
         .input-wrapper {
             position: relative;
@@ -100,10 +99,10 @@
             pointer-events: none;
         }
 
-        /* Style inputs and select similarly */
+       
         input, select {
             width: 100%;
-            padding: 14px 16px 14px 45px; /* Left padding for icon */
+            padding: 14px 16px 14px 45px; 
             background: var(--bg-input);
             border: 1px solid transparent;
             border-radius: 12px;
@@ -111,13 +110,13 @@
             font-size: 1rem;
             outline: none;
             transition: all 0.2s;
-            appearance: none; /* Remove default select arrow */
+            appearance: none; 
             -webkit-appearance: none;
         }
 
-        /* Custom arrow for select */
+        
         .select-wrapper::after {
-            content: '\f078'; /* FontAwesome arrow down fallback or use Phosphor */
+            content: '\f078'; 
             font-family: "Phosphor"; 
             position: absolute;
             right: 16px;
@@ -159,7 +158,7 @@
         
         .submit-btn:active { transform: translateY(0); }
 
-        /* --- MESSAGES & LINKS --- */
+       
         #messages {
             margin-bottom: 20px;
             min-height: 24px;
@@ -200,14 +199,14 @@
             display: inline-block;
         }
 
-        /* --- SUCCESS MODAL --- */
+       
         #successModal {
-            background: rgba(15, 23, 42, 0.8); /* Darker overlay */
+            background: rgba(15, 23, 42, 0.8); 
             backdrop-filter: blur(5px);
         }
         
         #successModal .modal-content {
-            background: #1e293b; /* Dark Card */
+            background: #1e293b;
             color: var(--text-main);
             border: 1px solid var(--border);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
@@ -310,9 +309,9 @@
     <script src="/js/header.js"></script>
     <script src="/js/auth.js"></script>
     
-    <!-- Inline Logic & Mocking -->
+ 
     <script>
-      // --- MOCK FUNCTION (Remove if /js/auth.js is present) ---
+      
       if (typeof register === 'undefined') {
           window.register = async (name, email, password, role) => {
               return new Promise((resolve, reject) => {
@@ -322,12 +321,12 @@
                       } else {
                           reject(new Error('All fields are required'));
                       }
-                  }, 1000); // Simulate network delay
+                  }, 1000); 
               });
           };
       }
 
-      // --- FORM LOGIC ---
+ 
       const form = document.getElementById('registerForm');
       const messages = document.getElementById('messages');
       const btnText = document.getElementById('btn-text');
@@ -350,11 +349,11 @@
         try {
           await register(name, email, password, role);
           
-          // Show success modal
+      
           const modal = document.getElementById('successModal');
           modal.style.display = 'flex';
           
-          // Countdown timer
+        
           let count = 3;
           const countdownEl = document.getElementById('countdown');
           

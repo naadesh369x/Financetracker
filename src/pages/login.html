@@ -3,21 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Icons -->
+
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- Fonts -->
+   
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
     
     <title>Login — Finance Tracker</title>
     
     <style>
-        /* --- DARK THEME VARIABLES --- */
+       
         :root {
-            --bg-body: #0f172a;       /* Slate 900 */
-            --bg-card: rgba(30, 41, 59, 0.7); /* Glass effect */
-            --bg-input: #334155;      /* Slate 700 */
-            --primary: #10b981;       /* Emerald */
+            --bg-body: #0f172a;       
+            --bg-card: rgba(30, 41, 59, 0.7); 
+            --bg-input: #334155;      
+            --primary: #10b981;       
             --primary-glow: rgba(16, 185, 129, 0.4);
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
@@ -85,7 +85,7 @@
         }
 
         label {
-            display: none; /* Using placeholders with icons for cleaner look */
+            display: none; 
         }
 
         .input-wrapper {
@@ -104,7 +104,7 @@
 
         input {
             width: 100%;
-            padding: 14px 16px 14px 45px; /* Left padding for icon */
+            padding: 14px 16px 14px 45px; 
             background: var(--bg-input);
             border: 1px solid transparent;
             border-radius: 12px;
@@ -129,7 +129,7 @@
             padding: 14px;
             margin-top: 10px;
             background: var(--primary);
-            color: #0f172a; /* Dark text on bright green */
+            color: #0f172a;
             border: none;
             border-radius: 12px;
             font-weight: 700;
@@ -148,7 +148,7 @@
             transform: translateY(0);
         }
 
-        /* --- MESSAGES & LINKS --- */
+      
         #messages {
             margin-bottom: 20px;
             min-height: 24px;
@@ -197,7 +197,7 @@
             text-decoration: underline;
         }
         
-        /* Simple Logo for visual balance */
+       
         .logo {
             font-size: 2rem;
             color: var(--primary);
@@ -208,12 +208,12 @@
   </head>
   <body>
 
-    <!-- Placeholder for Topbar (Usually hidden on login pages, but kept per request) -->
+  
     <div id="topbar" style="position: absolute; top: 0; width: 100%; z-index: 10;"></div>
 
     <main class="page-container">
       <div class="form-box">
-        <!-- Logged In User Section -->
+        
         <div id="loggedInSection" style="display: none; margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
           <div class="logo">
             <i class="ph ph-user-circle"></i>
@@ -228,7 +228,7 @@
           <button class="submit-btn" type="button" style="background: #ef4444;" onclick="logoutUser()">Logout</button>
         </div>
 
-        <!-- Login Form Section -->
+        
         <div id="loginSection">
           <div class="logo">
               <i class="ph ph-currency-circle-dollar"></i>
@@ -265,14 +265,12 @@
       </div>
     </main>
 
-    <!-- Note: These scripts are required. If you don't have the backend set up yet, 
-         the script below includes a MOCK function so the UI works for testing. -->
+    
     <script src="/js/header.js"></script>
     <script src="/js/auth.js"></script>
     
     <script>
-      // --- MOCK FUNCTION (Remove this if you have the real /js/auth.js) ---
-      // This simulates the API so you can test the design immediately.
+      
       if (typeof login === 'undefined') {
           window.login = async (email, password) => {
               return new Promise((resolve, reject) => {
@@ -310,7 +308,7 @@
         const password = form.password.value;
 
         try {
-          // Call the login function (either from /js/auth.js or the mock above)
+          
           const res = await login(email, password);
           saveSession(res.token, res.user);
           
