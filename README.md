@@ -15,4 +15,4 @@ Used Technologies:
 <img width="1868" height="917" alt="image" src="https://github.com/user-attachments/assets/f07f1f09-e37f-4a7e-8a40-1cd2fcfde313" />
 
 
->>>>>>> 8597afec32755c70c6ddd4473d4104bf7fd79d46
+
