@@ -8,6 +8,11 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module">
+      window.API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+      window.API_USER_BASE = `${window.API_BASE}/users`;
+      window.API_EXPENSES_BASE = `${window.API_BASE}/expenses`;
+    </script>
     <style>
         
         :root {

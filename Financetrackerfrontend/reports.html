@@ -461,7 +461,8 @@
       async function fetchTransactions() {
         try {
           const token = localStorage.getItem('token');
-          const res = await fetch('http://localhost:3001/expenses', {
+          const apiBase = window.API_BASE || 'http://localhost:3001';
+          const res = await fetch(`${apiBase}/expenses`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           });
 

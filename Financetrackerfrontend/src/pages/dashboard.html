@@ -301,6 +301,7 @@
      
       let transactions = [];
       let editingId = null;
+      const API_BASE = window.API_BASE || 'http://localhost:3001';
 
     
       const els = {
@@ -321,7 +322,7 @@
       async function fetchTransactions() {
         try {
           const token = localStorage.getItem('token');
-          const res = await fetch("http://localhost:3001/expenses", {
+          const res = await fetch(`${API_BASE}/expenses`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           });
           
@@ -425,13 +426,13 @@
 
           let res;
           if (editingId) {
-            res = await fetch(`http://localhost:3001/expenses/${editingId}`, {
+            res = await fetch(`${API_BASE}/expenses/${editingId}`, {
               method: "PUT",
               headers,
               body: JSON.stringify(payload),
             });
           } else {
-            res = await fetch("http://localhost:3001/expenses", {
+            res = await fetch(`${API_BASE}/expenses`, {
               method: "POST",
               headers,
               body: JSON.stringify(payload),
@@ -470,7 +471,7 @@
 
         try {
           const token = localStorage.getItem('token');
-          const res = await fetch(`http://localhost:3001/expenses/${id}`, { 
+          const res = await fetch(`${API_BASE}/expenses/${id}`, { 
             method: "DELETE",
             headers: token ? { Authorization: `Bearer ${token}` } : {}
           });

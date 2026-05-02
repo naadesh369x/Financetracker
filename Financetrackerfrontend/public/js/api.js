@@ -1,7 +1,9 @@
 // Frontend helper to add expense using saved token
+const API_BASE = window.API_EXPENSES_BASE || 'http://localhost:3001/expenses';
+
 export async function addExpense({ amount, description }) {
   const token = localStorage.getItem('token');
-  const res = await fetch('http://localhost:3000/expenses', {
+  const res = await fetch(API_BASE, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -1,7 +1,10 @@
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import expenseRouter from "./routers/expenseRouter.js"; // make sure path is correct
+import expenseRouter from "./routers/expenseRouter.js"; 
 import userRouter from "./routers/userRouter.js";
+
+dotenv.config();
 
 const app = express();
 
@@ -20,7 +23,7 @@ app.use((req, res, next) => {
 });
 
 // MongoDB URL
-const mongodbURI =
+const mongodbURI = process.env.MONGODB_URI ||
   "mongodb+srv://gona:12345678m@cluster0.eqnilse.mongodb.net/expensesDB?appName=Cluster0";
 
 // MongoDB connect

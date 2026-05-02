@@ -1,5 +1,5 @@
 // Global auth functions (no ES modules)
-const API_BASE = 'http://localhost:3001/users';
+const API_BASE = window.API_USER_BASE || 'http://localhost:3001/users';
 
 async function login(email, password) {
   try {
