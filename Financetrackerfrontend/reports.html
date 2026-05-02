@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Reports — Finance Tracker</title>
+    
+    <style>
+     
+      :root {
+        --bg-body: #0f172a;      
+        --bg-card: #1e293b;      
+        --bg-input: #334155;      
+        --text-main: #f1f5f9;     
+        --text-muted: #94a3b8;    
+        --primary: #3b82f6;       
+        --success: #10b981;       
+        --danger: #ef4444;       
+        --warning: #f59e0b;      
+        --border: #334155;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-body);
+        color: var(--text-main);
+        min-height: 100vh;
+      }
+
+      /* --- LAYOUT --- */
+      .page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      /* --- ALERTS & USER BAR --- */
+      .user-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .user-info-section {
+        flex: 1;
+      }
+
+      .user-info-section h1 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+      }
+
+      .user-detail {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin: 4px 0;
+      }
+
+      .user-detail strong {
+        color: var(--text-main);
+      }
+
+      .btn-logout {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 6px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: 0.2s;
+      }
+      .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
+
+      /* --- CARDS --- */
+      .card {
+        background: var(--bg-card);
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+      .card-header {
+        padding: 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      .card-header h2 { font-size: 1.1rem; font-weight: 600; }
+      .card-body { padding: 20px; }
+
+      /* --- STATS GRID --- */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        padding: 24px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+
+      .stat-label { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+      .stat-value { font-size: 1.8rem; font-weight: 700; }
+      .text-green { color: var(--success); }
+      .text-red { color: var(--danger); }
+
+      /* --- FILTERS --- */
+      .filters {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      select {
+        padding: 8px 12px;
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-main);
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: 0.2s;
+      }
+      .btn:hover { background: #2563eb; }
+
+      /* --- TABLE STYLES --- */
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+
+      thead {
+        background: var(--bg-input);
+        border-bottom: 2px solid var(--border);
+      }
+
+      th {
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        font-size: 0.85rem;
+      }
+
+      td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      tr:hover {
+        background: rgba(59, 130, 246, 0.05);
+      }
+
+      .type-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .badge-income {
+        background: rgba(16, 185, 129, 0.2);
+        color: var(--success);
+      }
+
+      .badge-expense {
+        background: rgba(239, 68, 68, 0.2);
+        color: var(--danger);
+      }
+
+      .amount-positive { color: var(--success); font-weight: 600; }
+      .amount-negative { color: var(--danger); font-weight: 600; }
+
+      .no-data {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-muted);
+      }
+
+      /* --- SUMMARY SECTION --- */
+      .summary-box {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid var(--primary);
+        padding: 16px;
+        border-radius: 8px;
+        margin-top: 20px;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .summary-row:last-child {
+        border-bottom: none;
+      }
+
+      .summary-label { color: var(--text-muted); }
+      .summary-value { font-weight: 600; }
+
+      /* --- CHARTS SECTION --- */
+      .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 24px;
+        margin-bottom: 30px;
+      }
+
+      .chart-container {
+        background: var(--bg-card);
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        padding: 20px;
+        position: relative;
+        height: 350px;
+      }
+
+      .chart-container canvas {
+        max-height: 300px;
+      }
+
+      .chart-title {
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--text-main);
+      }
+
+      @media (max-width: 768px) {
+        .user-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .filters {
+          flex-direction: column;
+        }
+
+        select {
+          width: 100%;
+        }
+
+        table {
+          font-size: 0.85rem;
+        }
+
+        th, td {
+          padding: 8px;
+        }
+
+        .card-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="topbar"></div>
+
+      <div class="page-container">
+        <!-- User Information Section -->
+        <div class="card">
+          <div class="card-body">
+            <div class="user-bar">
+              <div class="user-info-section">
+                <h1>Account Report</h1>
+                <div class="user-detail">
+                  <strong>Email:</strong> <span id="userEmail">—</span>
+                </div>
+                <div class="user-detail">
+                  <strong>Name:</strong> <span id="userName">—</span>
+                </div>
+                <div class="user-detail">
+                  <strong>Role:</strong> <span id="userRole">—</span>
+                </div>
+                <div class="user-detail">
+                  <strong>Member Since:</strong> <span id="joinDate">—</span>
+                </div>
+              </div>
+              <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Income</div>
+            <div class="stat-value text-green" id="totalIncome">$0.00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Expense</div>
+            <div class="stat-value text-red" id="totalExpense">$0.00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Net Balance</div>
+            <div class="stat-value" id="netBalance" style="color: var(--text-main);">$0.00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Transactions</div>
+            <div class="stat-value" id="totalTransactions">0</div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div style="margin-bottom: 40px;">
+          <h2 style="margin-bottom: 20px; font-size: 1.3rem;">📊 Financial Analysis</h2>
+          <div class="charts-grid">
+            <!-- Pie Chart: Income vs Expense -->
+            <div class="chart-container">
+              <div class="chart-title">Income vs Expense Distribution</div>
+              <canvas id="incomeExpenseChart"></canvas>
+            </div>
+
+            <!-- Bar Chart: Income vs Expense Comparison -->
+            <div class="chart-container">
+              <div class="chart-title">Income & Expense Comparison</div>
+              <canvas id="comparisonChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transactions Report -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Transaction History</h2>
+            <div class="filters">
+              <select id="filterType">
+                <option value="">All Types</option>
+                <option value="income">Income Only</option>
+                <option value="expense">Expense Only</option>
+              </select>
+              <button class="btn" onclick="filterTransactions()">Filter</button>
+              <button class="btn" onclick="exportReport()" style="background: var(--success);">📥 Export CSV</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="transactionsTable">
+                  <tr>
+                    <td colspan="4" class="no-data">Loading transactions...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Summary Box -->
+            <div class="summary-box">
+              <div class="summary-row">
+                <span class="summary-label">Total Income:</span>
+                <span class="summary-value text-green" id="summaryIncome">$0.00</span>
+              </div>
+              <div class="summary-row">
+                <span class="summary-label">Total Expenses:</span>
+                <span class="summary-value text-red" id="summaryExpense">$0.00</span>
+              </div>
+              <div class="summary-row">
+                <span class="summary-label">Net Profit:</span>
+                <span class="summary-value" id="summaryProfit">$0.00</span>
+              </div>
+              <div class="summary-row">
+                <span class="summary-label">Transaction Count:</span>
+                <span class="summary-value" id="summaryCount">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="/js/header.js"></script>
+    <script>
+      // State
+      let allTransactions = [];
+      let filteredTransactions = [];
+
+      // Initialize
+      function init() {
+        const userStr = localStorage.getItem('user');
+        const user = userStr ? JSON.parse(userStr) : null;
+
+        if (!user || !user.email) {
+          window.location.href = '/src/pages/index.html';
+          return;
+        }
+
+        // Display user info
+        document.getElementById('userEmail').textContent = user.email;
+        document.getElementById('userName').textContent = user.name || 'N/A';
+        document.getElementById('userRole').textContent = user.role || 'Student';
+        
+        const joinDate = new Date();
+        document.getElementById('joinDate').textContent = joinDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+
+        // Fetch transactions
+        fetchTransactions();
+      }
+
+      // Fetch user's transactions
+      async function fetchTransactions() {
+        try {
+          const token = localStorage.getItem('token');
+          const res = await fetch('http://localhost:3001/expenses', {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          });
+
+          if (!res.ok) {
+            if (res.status === 401 || res.status === 403) {
+              window.location.href = '/src/pages/index.html';
+            }
+            throw new Error('Failed to fetch');
+          }
+
+          allTransactions = await res.json();
+          filteredTransactions = allTransactions;
+          renderReport();
+        } catch (err) {
+          console.error('Error fetching transactions:', err);
+          document.getElementById('transactionsTable').innerHTML = 
+            '<tr><td colspan="4" class="no-data" style="color: var(--danger);">Failed to load transactions</td></tr>';
+        }
+      }
+
+      // Filter transactions
+      function filterTransactions() {
+        const filterType = document.getElementById('filterType').value;
+        filteredTransactions = filterType 
+          ? allTransactions.filter(t => t.type === filterType)
+          : allTransactions;
+        renderReport();
+      }
+
+      // Render report
+      function renderReport() {
+        renderTable();
+        updateStats();
+        updateCharts();
+      }
+
+      // Render table
+      function renderTable() {
+        const tbody = document.getElementById('transactionsTable');
+        
+        if (filteredTransactions.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" class="no-data">No transactions found</td></tr>';
+          return;
+        }
+
+        // Sort by date (newest first)
+        const sorted = [...filteredTransactions].sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        tbody.innerHTML = sorted.map(t => {
+          const date = new Date(t.createdAt);
+          const dateStr = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          });
+          const timeStr = date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+
+          const isIncome = t.type === 'income';
+          const amountClass = isIncome ? 'amount-positive' : 'amount-negative';
+          const sign = isIncome ? '+' : '-';
+          const badgeClass = isIncome ? 'badge-income' : 'badge-expense';
+          const typeLabel = isIncome ? 'Income' : 'Expense';
+
+          return `
+            <tr>
+              <td>${dateStr} ${timeStr}</td>
+              <td><span class="type-badge ${badgeClass}">${typeLabel}</span></td>
+              <td>${t.description}</td>
+              <td class="${amountClass}">${sign}$${Math.abs(t.amount).toFixed(2)}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Update statistics
+      function updateStats() {
+        const totalIncome = filteredTransactions
+          .filter(t => t.type === 'income')
+          .reduce((sum, t) => sum + t.amount, 0);
+
+        const totalExpense = filteredTransactions
+          .filter(t => t.type === 'expense')
+          .reduce((sum, t) => sum + t.amount, 0);
+
+        const netBalance = totalIncome - totalExpense;
+        const count = filteredTransactions.length;
+
+        // Header stats
+        document.getElementById('totalIncome').textContent = `$${totalIncome.toFixed(2)}`;
+        document.getElementById('totalExpense').textContent = `$${totalExpense.toFixed(2)}`;
+        document.getElementById('totalTransactions').textContent = count;
+
+        const netElement = document.getElementById('netBalance');
+        netElement.textContent = `$${netBalance.toFixed(2)}`;
+        netElement.className = `stat-value ${netBalance >= 0 ? 'text-green' : 'text-red'}`;
+
+        // Summary box
+        document.getElementById('summaryIncome').textContent = `$${totalIncome.toFixed(2)}`;
+        document.getElementById('summaryExpense').textContent = `$${totalExpense.toFixed(2)}`;
+        document.getElementById('summaryProfit').textContent = `$${netBalance.toFixed(2)}`;
+        document.getElementById('summaryCount').textContent = count;
+
+        const profitElement = document.getElementById('summaryProfit');
+        profitElement.className = `summary-value ${netBalance >= 0 ? 'text-green' : 'text-red'}`;
+      }
+
+      // Export to CSV
+      function exportReport() {
+        if (filteredTransactions.length === 0) {
+          alert('No transactions to export');
+          return;
+        }
+
+        const userStr = localStorage.getItem('user');
+        const user = userStr ? JSON.parse(userStr) : {};
+
+        // Prepare CSV content
+        let csv = 'Finance Tracker Report\n';
+        csv += `Generated: ${new Date().toLocaleString()}\n`;
+        csv += `User Email: ${user.email}\n`;
+        csv += `User Name: ${user.name || 'N/A'}\n\n`;
+
+        csv += 'Date,Time,Type,Description,Amount\n';
+
+        filteredTransactions
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .forEach(t => {
+            const date = new Date(t.createdAt);
+            const dateStr = date.toLocaleDateString('en-US');
+            const timeStr = date.toLocaleTimeString('en-US');
+            const sign = t.type === 'income' ? '+' : '-';
+            
+            csv += `"${dateStr}","${timeStr}","${t.type}","${t.description}","${sign}${t.amount}"\n`;
+          });
+
+        // Add summary
+        csv += '\n\nSummary\n';
+        const totalIncome = filteredTransactions
+          .filter(t => t.type === 'income')
+          .reduce((sum, t) => sum + t.amount, 0);
+        const totalExpense = filteredTransactions
+          .filter(t => t.type === 'expense')
+          .reduce((sum, t) => sum + t.amount, 0);
+
+        csv += `Total Income,${totalIncome.toFixed(2)}\n`;
+        csv += `Total Expense,${totalExpense.toFixed(2)}\n`;
+        csv += `Net Balance,${(totalIncome - totalExpense).toFixed(2)}\n`;
+
+        // Download CSV
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `finance-report-${user.email}-${new Date().getTime()}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }
+
+      // Global chart instances
+      let incomeExpenseChart = null;
+      let comparisonChart = null;
+
+      // Update charts
+      function updateCharts() {
+        const totalIncome = filteredTransactions
+          .filter(t => t.type === 'income')
+          .reduce((sum, t) => sum + t.amount, 0);
+
+        const totalExpense = filteredTransactions
+          .filter(t => t.type === 'expense')
+          .reduce((sum, t) => sum + t.amount, 0);
+
+        // Destroy existing charts if they exist
+        if (incomeExpenseChart) incomeExpenseChart.destroy();
+        if (comparisonChart) comparisonChart.destroy();
+
+        // Pie Chart: Income vs Expense
+        const pieCtx = document.getElementById('incomeExpenseChart').getContext('2d');
+        incomeExpenseChart = new Chart(pieCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Income', 'Expense'],
+            datasets: [{
+              data: [totalIncome, totalExpense],
+              backgroundColor: ['#10b981', '#ef4444'],
+              borderColor: '#1e293b',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: '#f1f5f9',
+                  font: { size: 13 }
+                },
+                position: 'bottom'
+              },
+              tooltip: {
+                callbacks: {
+                  label: (context) => `$${context.parsed.toFixed(2)}`
+                }
+              }
+            }
+          }
+        });
+
+        // Bar Chart: Income vs Expense Comparison
+        const barCtx = document.getElementById('comparisonChart').getContext('2d');
+        comparisonChart = new Chart(barCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Total Income', 'Total Expense', 'Net Balance'],
+            datasets: [{
+              label: 'Amount',
+              data: [totalIncome, totalExpense, totalIncome - totalExpense],
+              backgroundColor: ['#10b981', '#ef4444', '#3b82f6'],
+              borderColor: '#1e293b',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'x',
+            plugins: {
+              legend: {
+                labels: { color: '#f1f5f9', font: { size: 13 } }
+              },
+              tooltip: {
+                callbacks: {
+                  label: (context) => `$${context.parsed.y.toFixed(2)}`
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { color: '#94a3b8' },
+                grid: { color: '#334155' }
+              },
+              x: {
+                ticks: { color: '#94a3b8' },
+                grid: { drawBorder: false }
+              }
+            }
+          }
+        });
+      }
+
+      // Logout
+      function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/src/pages/index.html';
+          }
+
+      // Initialize on load
+      window.addEventListener('load', init);
+    </script>
+  </body>
+</html>
